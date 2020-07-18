@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import Card from './components/cards/card.components';
 import NationList from './components/NationList/NationList.components';
+import CardRow from './components/cards/CardContainer.components';
 
 class App extends Component {
   constructor() {
@@ -23,7 +23,7 @@ class App extends Component {
     const { countries } = this.state;
     return (
       <div className="App">
-        <Card data={countries} />
+        <CardRow data={countries} />
         <NationList data={countries} />
       </div>
     )

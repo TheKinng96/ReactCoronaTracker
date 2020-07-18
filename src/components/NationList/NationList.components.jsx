@@ -6,10 +6,11 @@ const Container = styled.div`
   flex-direction: column;
   overflow-y: scroll;
   height:40vh;
-  width:30vw;
+  width:40vw;
   border: 1px black solid;
   border-radius: 1rem;
   padding-left: 1.5rem;
+  padding-right: 1.5rem;
   padding-top: 1rem;
   -ms-overflow-style: none;
   scrollbar-width: none; 
@@ -20,17 +21,20 @@ const Container = styled.div`
 `
 
 const CountryLine = styled.h3`
+  font-size: 1.25rem;
+  padding: 0.5rem
 `
 
 const NationList = data => {
   const countries = data.data;
-  console.log(countries)
 
   return (
     <Container>
-      {countries.map(country => (
-        <CountryLine key={country.id}>{country.country}</CountryLine>
-      ))}
+      {countries.map((country,index) => {
+        return index % 2 == 0 ? 
+          <CountryLine key={country.id} style={{ "background-color": "rgb(237, 237, 237)" }}>{country.country}</CountryLine> :
+          <CountryLine key={country.id} >{country.country}</CountryLine>
+      })}
     </Container>
   )
 }
