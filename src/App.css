@@ -7,14 +7,23 @@
   height: 100vh;
   width: 100vw;
   background-color: rgb(219, 248, 255);
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1rem;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
+
 }
 
 .card-container {
   display: flex;
   justify-content: space-around;
+  margin: 1rem 0;
+}
+
+.left {
+  flex:0.9;
 }

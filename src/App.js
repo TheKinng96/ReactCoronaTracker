@@ -1,18 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { MenuItem, FormControl, Select, InputLabel, Card, CardContent } from '@material-ui/core';
+import { MenuItem, FormControl, Select, Card, CardContent } from '@material-ui/core';
 
 import InfoBox from './components/Header.InfoBox/InfoBox.components';
-import Map from './components/Map/Map'
+import Map from './components/Map/Map';
+import Table from './components/Side.Table/Table.components'
 
 import "./App.css"
+import { sortData } from './helper/RankSorting';
+
+const baseURL = 'https://disease.sh/v3/covid-19/all';
+const countryURL = 'https://disease.sh/v3/covid-19/countries/';
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState('worldwide');
+  const [countryInfo, setCountryInfo] = useState({});
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(async() => {
+    await fetch(baseURL)
+      .then((response) => response.json())
+      .then((data) => {
+        setCountryInfo(data);
+    })
+  },[])
 
   useEffect(() => {
     const getCountriesData = async () => {
-      await fetch('https://disease.sh/v3/covid-19/countries')
+      await fetch(countryURL)
         .then((response) => response.json())
         .then((data) => {
 
@@ -20,16 +35,28 @@ function App() {
             name: country.country,
             shortName: country.countryInfo.iso2
           }))
+
+          const sortedData = sortData(data);
           setCountries(countries)
+          setTableData(sortedData)
       }) 
     }
     getCountriesData();
   }, [])
   
-  const onCountryChange = (event) => {
+  const onCountryChange = async (event) => {
     const selectedCountry = event.target.value;
 
     setCountry(selectedCountry)
+
+    const url = selectedCountry === 'worldwide' ? baseURL : countryURL + selectedCountry;
+
+    await fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        setCountry(selectedCountry);
+        setCountryInfo(data)
+    })
   }
 
   return (
@@ -55,16 +82,28 @@ function App() {
         </Card>
 
         <div className="card-container">
-          <InfoBox title='Infected' cases={1234} total={1234} />
-          <InfoBox title='Recovery' cases={1234} total={1234} />
-          <InfoBox title='Death' cases={1234} total={1234} />
+          <InfoBox
+            title='Infected'
+            cases={countryInfo.todayCases}
+            total={countryInfo.cases} />
+          <InfoBox
+            title='Recovery'
+            cases={countryInfo.todayRecovered}
+            total={countryInfo.recovered} />
+          <InfoBox title='Deaths'
+            cases={countryInfo.todayDeaths}
+            total={countryInfo.deaths} />
         </div>
         
           <Map />
       </div>
 
       <Card className="right">
-
+        <CardContent>
+          <h3>List of countries</h3>
+          <Table countries={tableData} />
+          <h3>Graph of cases</h3>
+        </CardContent>
       </Card>
     </div>
   )
