@@ -31,7 +31,7 @@ function Table({countries}) {
   return (
     <TableContainer>
       {countries.map(({country, cases}) => (
-        <TR>
+        <TR key={country}>
           <td>{country}</td>
           <td>
             <strong>

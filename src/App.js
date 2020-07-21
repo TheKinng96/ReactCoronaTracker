@@ -4,6 +4,7 @@ import { MenuItem, FormControl, Select, Card, CardContent } from '@material-ui/c
 import InfoBox from './components/Header.InfoBox/InfoBox.components';
 import Map from './components/Map/Map';
 import Table from './components/Side.Table/Table.components'
+import LineGraph from './components/Side.LineGraph/LineGraph.component'
 
 import "./App.css"
 import { sortData } from './helper/RankSorting';
@@ -17,8 +18,8 @@ function App() {
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([]);
 
-  useEffect(async() => {
-    await fetch(baseURL)
+  useEffect(() => {
+    fetch(baseURL)
       .then((response) => response.json())
       .then((data) => {
         setCountryInfo(data);
@@ -73,7 +74,7 @@ function App() {
               >
                 <MenuItem value='worldwide'>WorldWide</MenuItem>
                 {countries.map(country => (
-                  <MenuItem value={country.shortName}>{country.name}</MenuItem>
+                  <MenuItem value={country.shortName} key={country.shortName}>{country.name}</MenuItem>
                 ))}
 
               </Select>
@@ -103,6 +104,7 @@ function App() {
           <h3>List of countries</h3>
           <Table countries={tableData} />
           <h3>Graph of cases</h3>
+          <LineGraph />
         </CardContent>
       </Card>
     </div>
