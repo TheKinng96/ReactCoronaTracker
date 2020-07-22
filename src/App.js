@@ -7,16 +7,23 @@ import Table from './components/Side.Table/Table.components'
 import LineGraph from './components/Side.LineGraph/LineGraph.component'
 
 import "./App.css"
+import 'leaflet/dist/leaflet.css'
 import { sortData } from './helper/RankSorting';
 
 const baseURL = 'https://disease.sh/v3/covid-19/all';
 const countryURL = 'https://disease.sh/v3/covid-19/countries/';
+
+//diamond princess
+//ms zaandam
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState('worldwide');
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([]);
+  const [mapCenter, setMapCenter] = useState({ lat: 2.5, lng: 112.5 });
+  const [mapZoom, setMapZoom] = useState(3);
+  const [mapCountries, setMapCountries] = useState([])
 
   useEffect(() => {
     fetch(baseURL)
@@ -32,14 +39,27 @@ function App() {
         .then((response) => response.json())
         .then((data) => {
 
-          const countries = data.map(country => ({
+          let filteredData = [];
+
+          data.filter(country => {
+            if (country.countryInfo._id == null) {
+              return false
+            } else {
+              return filteredData.push(country)
+            }
+          })
+          // console.log(filteredData)
+
+          const countries = filteredData.map(country => ({
             name: country.country,
             shortName: country.countryInfo.iso2
           }))
 
-          const sortedData = sortData(data);
+          // console.log(data)
+          const sortedData = sortData(filteredData);
           setCountries(countries)
           setTableData(sortedData)
+          setMapCountries(filteredData)
       }) 
     }
     getCountriesData();
@@ -57,6 +77,12 @@ function App() {
       .then((data) => {
         setCountry(selectedCountry);
         setCountryInfo(data)
+        console.log(data)
+        setMapCenter([data.countryInfo.lat, data.countryInfo.long])
+        setMapZoom(4)
+      }).catch(error => {
+        console.log(error);
+        alert("No data from that selected country.")
     })
   }
 
@@ -96,7 +122,11 @@ function App() {
             total={countryInfo.deaths} />
         </div>
         
-          <Map />
+        <Map 
+          countries={mapCountries}
+          center={mapCenter}
+          zoom={mapZoom}
+          />
       </div>
 
       <Card className="right">

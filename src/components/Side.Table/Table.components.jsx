@@ -2,16 +2,17 @@ import React from 'react'
 import styled from 'styled-components';
 
 const TableContainer = styled.div`
-  overflow-y: scroll;
   height: 50vh;
   margin-top:1rem;
   color:#6a5d5d;
+  overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
 
   &::-webkit-scrollbar {
     display: none;
   }
+
 `
 
 const TR = styled.tr`
@@ -30,6 +31,7 @@ const TR = styled.tr`
 function Table({countries}) {
   return (
     <TableContainer>
+      <tbody>
       {countries.map(({country, cases}) => (
         <TR key={country}>
           <td>{country}</td>
@@ -40,6 +42,7 @@ function Table({countries}) {
           </td>
         </TR>
       ))}
+      </tbody>
     </TableContainer>
   )
 }

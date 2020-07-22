@@ -1,12 +1,17 @@
 * {
   box-sizing: border-box;
   margin: 0;
+  
+}
+
+body {
+  background-color: rgb(219, 248, 255);
+
 }
 
 #App {
-  height: 100vh;
+  height: 99vh;
   width: 100vw;
-  background-color: rgb(219, 248, 255);
   display: flex;
   justify-content: space-evenly;
   padding: 1rem;
