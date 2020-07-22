@@ -1,6 +1,6 @@
 import React from 'react';
 // import numeral from 'numeral';
-import { CircleMarker, Popup } from 'react-leaflet';
+import { Circle, Popup } from 'leaflet';
 
 const casesTypeColor = {
   cases: {
@@ -20,10 +20,10 @@ const casesTypeColor = {
 export const showDataOnMap = (data, casesType = "cases") => {
 
   console.log(data)
-
-  data.map(country => (
-    <CircleMarker 
-      center={[country.countryInfo.lat, country.countryInfo.long]}
+  if (data && data.length > 0) {
+    data.map(country => (
+    <Circle 
+      center={{lat: country.countryInfo.lat, lng:country.countryInfo.long}}
       fillOpacity={0.4}
       color={casesTypeColor[casesType].hex}
       fillColor={casesTypeColor[casesType].hex}
@@ -33,6 +33,10 @@ export const showDataOnMap = (data, casesType = "cases") => {
       <Popup>
           <h1>I am a pop up</h1>
       </Popup>
-    </CircleMarker>
+    </Circle>
   ))
+  } else {
+    console.log('lol')
+  }
+  
 }

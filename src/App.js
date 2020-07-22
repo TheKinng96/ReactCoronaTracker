@@ -126,6 +126,7 @@ function App() {
           countries={mapCountries}
           center={mapCenter}
           zoom={mapZoom}
+          casesType='recovered'
           />
       </div>
 

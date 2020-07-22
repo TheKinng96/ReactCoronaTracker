@@ -1,7 +1,9 @@
 import React from 'react';
-import { Map as LeafletMap, TileLayer } from 'react-leaflet';
+import { Map as LeafletMap, TileLayer, Circle } from 'react-leaflet';
 import styled from 'styled-components'
-import { showDataOnMap } from '../../helper/CircleLoop';
+import { showDataOnMap } from '../../helper/DrawingCircle';
+
+
 
 const MapContainer = styled.div`
   height: 500px;
@@ -15,6 +17,20 @@ const MapContainer = styled.div`
     height: 100%
   }
 `
+const casesTypeColor = {
+  cases: {
+    hex: "red",
+    multiplier: 800,
+  },
+  recovered: {
+    hex: "green",
+    multiplier: 1200,
+  },
+  deaths: {
+    hex: "blue",
+    multiplier: 2000,
+  }
+}
 
 function Map({ countries, casesType, center, zoom }) {
   return (
@@ -24,7 +40,20 @@ function Map({ countries, casesType, center, zoom }) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
         />
-        {showDataOnMap(countries, casesType)}
+        {/* {showDataOnMap(countries, casesType)} */}
+        {countries.map(country => (
+          <Circle
+            center={[country.countryInfo.lat, country.countryInfo.long]}
+            fillOpacity={0.4}
+            color={casesTypeColor[casesType].hex}
+            fillColor={casesTypeColor[casesType].hex}
+            radius={Math.sqrt(country[casesType])*casesTypeColor[casesType].multiplier}
+            key={country.countryInfo.iso2}
+          >
+            {console.log(Math.sqrt(country.cases))}
+          </Circle>
+        ))}
+        
         
       </LeafletMap>
     </MapContainer>
