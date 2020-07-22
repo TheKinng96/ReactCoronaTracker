@@ -12,7 +12,15 @@ const CardContainer = styled(Card)`
   }
 
   &.infoBox--selected {
-   border-top: 10px solid greenyellow 
+    border-top: 10px solid greenyellow; 
+  }
+
+  &.redBox {
+    border-color: red; 
+  }
+
+  &.blueBox {
+    border-color: royalblue; 
   }
 `
 
@@ -21,6 +29,10 @@ const CasesContainer = styled.h2`
   font-weight: 600;
   font-size: 1.75rem;
   margin-bottom: 0.5rem;
+
+  &.greenWord {
+    color: lightgreen !important;
+  }
 `
 
 const TotalCases = styled(Typography)`
@@ -30,12 +42,12 @@ const TotalCases = styled(Typography)`
   margin-top: 1rem !important;
 `
 
-function InfoBox({ title, cases, active, total, ...props }) {
+function InfoBox({ title, cases, active, isRed, isBlue, total, ...props }) {
   return (
-    <CardContainer onClick={props.onClick} className={active && 'infoBox--selected'}>
+    <CardContainer onClick={props.onClick} className={`${active && 'infoBox--selected'} ${isRed && 'redBox'} ${isBlue && 'blueBox'}`}>
       <CardContent>
         <Typography className="info-title" color="textPrimary">{title}</Typography>
-        <CasesContainer>{cases}</CasesContainer>
+        <CasesContainer className={`${!isRed & !isBlue && 'greenWord'}`} >{cases}</CasesContainer>
         <TotalCases color="textSecondary">{total} Total</TotalCases>
       </CardContent>
     </CardContainer>

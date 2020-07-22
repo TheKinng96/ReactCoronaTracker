@@ -111,6 +111,7 @@ function App() {
 
         <div className="card-container">
           <InfoBox
+            isRed
             active={casesType === 'cases'}
             onClick={e => setCasesType('cases')}
             title='Infected'
@@ -123,6 +124,7 @@ function App() {
             cases={beautifyStat(countryInfo.todayRecovered)}
             total={beautifyStat(countryInfo.recovered)} />
           <InfoBox
+            isBlue
             active={casesType === 'deaths'}
             title='Deaths'
             onClick={e => setCasesType('deaths')}
