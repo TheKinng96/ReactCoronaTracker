@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
+import numeral from 'numeral'
 
 const TableContainer = styled.div`
   height: 50vh;
@@ -37,7 +38,7 @@ function Table({countries}) {
           <td>{country}</td>
           <td>
             <strong>
-              {cases}
+              {numeral(cases).format("0,0")}
             </strong>
           </td>
         </TR>

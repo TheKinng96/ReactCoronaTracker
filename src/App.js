@@ -8,7 +8,7 @@ import LineGraph from './components/Side.LineGraph/LineGraph.component'
 
 import "./App.css"
 import 'leaflet/dist/leaflet.css'
-import { sortData } from './helper/RankSorting';
+import { sortData, beautifyStat } from './helper/RankSorting';
 
 const baseURL = 'https://disease.sh/v3/covid-19/all';
 const countryURL = 'https://disease.sh/v3/covid-19/countries/';
@@ -23,7 +23,8 @@ function App() {
   const [tableData, setTableData] = useState([]);
   const [mapCenter, setMapCenter] = useState({ lat: 2.5, lng: 112.5 });
   const [mapZoom, setMapZoom] = useState(3);
-  const [mapCountries, setMapCountries] = useState([])
+  const [mapCountries, setMapCountries] = useState([]);
+  const [casesType, setCasesType] = useState("cases");
 
   useEffect(() => {
     fetch(baseURL)
@@ -110,23 +111,30 @@ function App() {
 
         <div className="card-container">
           <InfoBox
+            active={casesType === 'cases'}
+            onClick={e => setCasesType('cases')}
             title='Infected'
-            cases={countryInfo.todayCases}
-            total={countryInfo.cases} />
+            cases={beautifyStat(countryInfo.todayCases)}
+            total={beautifyStat(countryInfo.cases)} />
           <InfoBox
+            active={casesType === 'recovered'}
+            onClick={e => setCasesType('recovered')}
             title='Recovery'
-            cases={countryInfo.todayRecovered}
-            total={countryInfo.recovered} />
-          <InfoBox title='Deaths'
-            cases={countryInfo.todayDeaths}
-            total={countryInfo.deaths} />
+            cases={beautifyStat(countryInfo.todayRecovered)}
+            total={beautifyStat(countryInfo.recovered)} />
+          <InfoBox
+            active={casesType === 'deaths'}
+            title='Deaths'
+            onClick={e => setCasesType('deaths')}
+            cases={beautifyStat(countryInfo.todayDeaths)}
+            total={beautifyStat(countryInfo.deaths)} />
         </div>
         
         <Map 
           countries={mapCountries}
           center={mapCenter}
           zoom={mapZoom}
-          casesType='recovered'
+          casesType={casesType}
           />
       </div>
 
@@ -134,8 +142,8 @@ function App() {
         <CardContent>
           <h3>List of countries</h3>
           <Table countries={tableData} />
-          <h3>Graph of cases</h3>
-          <LineGraph />
+          <h3>Graph of {casesType}</h3>
+          <LineGraph casesType={casesType}/>
         </CardContent>
       </Card>
     </div>

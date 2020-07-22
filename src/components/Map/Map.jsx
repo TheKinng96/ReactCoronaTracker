@@ -1,7 +1,7 @@
 import React from 'react';
-import { Map as LeafletMap, TileLayer, Circle } from 'react-leaflet';
+import { Map as LeafletMap, TileLayer, Circle, Popup } from 'react-leaflet';
 import styled from 'styled-components'
-import { showDataOnMap } from '../../helper/DrawingCircle';
+import numeral from 'numeral'
 
 
 
@@ -17,6 +17,30 @@ const MapContainer = styled.div`
     height: 100%
   }
 `
+const InfoFlag = styled.div`
+  height: 80px;
+  width: 100%100px;
+  background-size: cover;
+  border-radius: 8px;
+
+  & img {
+    width: 100px;
+    border-radius:5px;
+  }
+`
+
+const CountryName = styled.h1`
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #555;
+  margin-top: 0.5rem;
+`
+
+const BasicInfoDiv = styled.div`
+  font-size: 1rem;
+  margin-top: 0.5rem;
+`
+
 const casesTypeColor = {
   cases: {
     hex: "red",
@@ -33,6 +57,8 @@ const casesTypeColor = {
 }
 
 function Map({ countries, casesType, center, zoom }) {
+
+  console.log(countries)
   return (
     <MapContainer>
       <LeafletMap center={center} zoom={zoom}>
@@ -40,7 +66,6 @@ function Map({ countries, casesType, center, zoom }) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
         />
-        {/* {showDataOnMap(countries, casesType)} */}
         {countries.map(country => (
           <Circle
             center={[country.countryInfo.lat, country.countryInfo.long]}
@@ -50,7 +75,15 @@ function Map({ countries, casesType, center, zoom }) {
             radius={Math.sqrt(country[casesType])*casesTypeColor[casesType].multiplier}
             key={country.countryInfo.iso2}
           >
-            {console.log(Math.sqrt(country.cases))}
+            <Popup>
+              <div className="info-container">
+                <InfoFlag style={{backgroundImage:`url(${country.countryInfo.flag})`}}></InfoFlag>
+                <CountryName>{country.country}</CountryName>
+                <BasicInfoDiv>Cases: {numeral(country.cases).format("0,0")}</BasicInfoDiv>
+                <BasicInfoDiv>recovered: {numeral(country.recovered).format("0,0")} </BasicInfoDiv>
+                <BasicInfoDiv>Deaths: {numeral(country.deaths).format("0,0")}</BasicInfoDiv>
+              </div>
+            </Popup>
           </Circle>
         ))}
         
