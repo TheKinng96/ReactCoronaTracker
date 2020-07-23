@@ -5,10 +5,11 @@ import InfoBox from './components/Header.InfoBox/InfoBox.components';
 import Map from './components/Map/Map';
 import Table from './components/Side.Table/Table.components'
 import LineGraph from './components/Side.LineGraph/LineGraph.component'
+import { sortData, beautifyStat } from './helper/RankSorting';
 
 import "./App.css"
+import { AppContainer, HeaderCard, HeaderCardContent, InfoContainer } from './App.styledComponent'
 import 'leaflet/dist/leaflet.css'
-import { sortData, beautifyStat } from './helper/RankSorting';
 
 const baseURL = 'https://disease.sh/v3/covid-19/all';
 const countryURL = 'https://disease.sh/v3/covid-19/countries/';
@@ -88,10 +89,10 @@ function App() {
   }
 
   return (
-    <div id="App">
+    <AppContainer id="App">
       <div className="left">
-        <Card >
-          <CardContent className="header">
+        <HeaderCard>
+          <HeaderCardContent>
             <h1>Corona Tracker V2</h1>
             <FormControl className="country-list">
               <Select
@@ -106,10 +107,10 @@ function App() {
 
               </Select>
             </FormControl>
-          </CardContent>
-        </Card>
+          </HeaderCardContent>
+        </HeaderCard>
 
-        <div className="card-container">
+        <InfoContainer>
           <InfoBox
             isRed
             active={casesType === 'cases'}
@@ -130,7 +131,7 @@ function App() {
             onClick={e => setCasesType('deaths')}
             cases={beautifyStat(countryInfo.todayDeaths)}
             total={beautifyStat(countryInfo.deaths)} />
-        </div>
+        </InfoContainer>
         
         <Map 
           countries={mapCountries}
@@ -144,11 +145,11 @@ function App() {
         <CardContent>
           <h3>List of countries</h3>
           <Table countries={tableData} />
-          <h3>Graph of {casesType}</h3>
+          <h3 className="graphName">Graph of {casesType.toUpperCase()}</h3>
           <LineGraph casesType={casesType}/>
         </CardContent>
       </Card>
-    </div>
+    </AppContainer>
   )
 }
 
