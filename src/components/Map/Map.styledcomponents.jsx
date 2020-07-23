@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export const MapContainer = styled.div`
-  height: 500px;
+  height: 65vh;
   background-color: white;
   padding: 1rem;
   border-radius: 1.2rem;
@@ -14,12 +14,13 @@ export const MapContainer = styled.div`
 `
 export const InfoFlag = styled.div`
   height: 80px;
-  width: 100%100px;
-  background-size: cover;
+  width: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
   border-radius: 8px;
 
   & img {
-    width: 100px;
+    width: 100%;
     border-radius:5px;
   }
 `

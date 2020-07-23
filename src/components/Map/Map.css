@@ -1,0 +1,7 @@
+.leaflet-popup-content-wrapper {
+  background: whitesmoke !important;
+}
+
+.leaflet-popup {
+  width: 200px;
+}

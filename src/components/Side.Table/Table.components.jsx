@@ -19,6 +19,7 @@ const TableContainer = styled.div`
 const TR = styled.tr`
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 
   &:nth-of-type(odd) {
     background-color: #f3f2f8

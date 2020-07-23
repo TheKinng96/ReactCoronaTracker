@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MenuItem, FormControl, Select, Card, CardContent } from '@material-ui/core';
+import { MenuItem, FormControl, Select, CardContent, TextField  } from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import InfoBox from './components/Header.InfoBox/InfoBox.components';
 import Map from './components/Map/Map';
@@ -8,7 +9,7 @@ import LineGraph from './components/Side.LineGraph/LineGraph.component'
 import { sortData, beautifyStat } from './helper/RankSorting';
 
 import "./App.css"
-import { AppContainer, HeaderCard, HeaderCardContent, InfoContainer } from './App.styledComponent'
+import { AppContainer, HeaderCard, HeaderCardContent, InfoContainer, SideContainer } from './App.styledComponent'
 import 'leaflet/dist/leaflet.css'
 
 const baseURL = 'https://disease.sh/v3/covid-19/all';
@@ -16,6 +17,7 @@ const countryURL = 'https://disease.sh/v3/covid-19/countries/';
 
 //diamond princess
 //ms zaandam
+
 
 function App() {
   const [countries, setCountries] = useState([]);
@@ -50,7 +52,7 @@ function App() {
               return filteredData.push(country)
             }
           })
-          // console.log(filteredData)
+          console.log(filteredData)
 
           const countries = filteredData.map(country => ({
             name: country.country,
@@ -79,9 +81,9 @@ function App() {
       .then((data) => {
         setCountry(selectedCountry);
         setCountryInfo(data)
-        console.log(data)
+        // console.log(data)
         setMapCenter([data.countryInfo.lat, data.countryInfo.long])
-        setMapZoom(4)
+        setMapZoom(4);
       }).catch(error => {
         console.log(error);
         alert("No data from that selected country.")
@@ -94,6 +96,22 @@ function App() {
         <HeaderCard>
           <HeaderCardContent>
             <h1>Corona Tracker V2</h1>
+             {/* <Autocomplete
+              id="country-select-demo"
+              style={{ width: 300 }}
+              options={countries}
+              autoHighlight
+              value={country}
+              getOptionLabel={(option) => option.name}
+              onChange={(event, value) => onCountryChange}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label={country}
+                  variant="outlined"
+                />
+              )}
+            /> */}
             <FormControl className="country-list">
               <Select
                 variant="outlined"
@@ -138,17 +156,19 @@ function App() {
           center={mapCenter}
           zoom={mapZoom}
           casesType={casesType}
+          selectedCountry={country}
+          countryInfo={countryInfo}
           />
       </div>
 
-      <Card className="right">
+      <SideContainer>
         <CardContent>
-          <h3>List of countries</h3>
+          <h3 className="ListName">List of Countries</h3>
           <Table countries={tableData} />
           <h3 className="graphName">Graph of {casesType.toUpperCase()}</h3>
           <LineGraph casesType={casesType}/>
         </CardContent>
-      </Card>
+      </SideContainer>
     </AppContainer>
   )
 }

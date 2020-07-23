@@ -1,11 +1,8 @@
 import React from 'react';
-import { Map as LeafletMap, TileLayer, Circle, Popup } from 'react-leaflet';
-import numeral from 'numeral'
-import { MapContainer, InfoFlag, CountryName, BasicInfoDiv} from './Map.styledcomponents'
-
-
-
-
+import { Map as LeafletMap, TileLayer, Circle, Popup, Marker } from 'react-leaflet';
+import numeral from 'numeral';
+import { MapContainer, InfoFlag, CountryName, BasicInfoDiv } from './Map.styledcomponents'
+import './Map.css'
 
 const casesTypeColor = {
   cases: {
@@ -22,12 +19,11 @@ const casesTypeColor = {
   }
 }
 
-function Map({ countries, casesType, center, zoom }) {
+function Map({ countries, casesType, center, zoom, }) {
 
-  console.log(countries)
   return (
     <MapContainer>
-      <LeafletMap center={center} zoom={zoom}>
+      <LeafletMap center={center} zoom={zoom} >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
@@ -42,7 +38,7 @@ function Map({ countries, casesType, center, zoom }) {
             key={country.countryInfo.iso2}
           >
             <Popup>
-              <div className="info-container">
+              <div>
                 <InfoFlag style={{backgroundImage:`url(${country.countryInfo.flag})`}}></InfoFlag>
                 <CountryName>{country.country}</CountryName>
                 <BasicInfoDiv>Cases: {numeral(country.cases).format("0,0")}</BasicInfoDiv>
@@ -51,9 +47,7 @@ function Map({ countries, casesType, center, zoom }) {
               </div>
             </Popup>
           </Circle>
-        ))}
-        
-        
+        ))}        
       </LeafletMap>
     </MapContainer>
   )

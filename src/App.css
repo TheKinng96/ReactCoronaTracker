@@ -19,18 +19,16 @@ body {
   flex:0.9;
 }
 
-.right {
-  display: flex;
-  flex-direction: column;
-  bottom: 1rem;
-}
-
-.right .MuiCardContent-root {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+.ListName {
+  font-size: 1.25rem;
 }
 
 .graphName {
-  margin: 1rem 0;
+  margin: 1.5rem 0;
+  font-size: 1.25rem;
+
+}
+
+.MuiPaper-rounded{
+  border-radius: 1rem !important;
 }

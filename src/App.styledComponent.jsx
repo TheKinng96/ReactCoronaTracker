@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { MenuItem, FormControl, Select, Card, CardContent } from '@material-ui/core';
+import { Card, CardContent } from '@material-ui/core';
 
 
 export const AppContainer = styled.div`
@@ -34,4 +34,10 @@ export const InfoContainer = styled.div`
   justify-content: space-around;
   margin: 0.5rem 0;
   height: 19vh !important;
+`
+
+export const SideContainer = styled(Card)`
+  display: flex;
+  flex-direction: column;
+  bottom: 1rem;
 `
