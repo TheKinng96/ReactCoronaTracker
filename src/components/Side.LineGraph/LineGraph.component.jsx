@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2'
 import numeral from 'numeral'
+import styled from 'styled-components';
+
+const GraphContainer = styled.div`
+  flex-grow: 1;
+`
 
 const options = {
   legend: {
@@ -46,42 +51,46 @@ const options = {
   }
 }
 
-function LineGraph(casesType) {
+const buildChartData = (data, casesType) => {
+  const chartData = [];
+  let previousPoint;
+
+  for (let date in data.cases) {
+    if (previousPoint) {
+      let newPoint = {
+        x: date,
+        y: data[casesType][date] - previousPoint,
+      };
+      chartData.push(newPoint);
+    }
+    previousPoint = data[casesType][date]
+  }
+  return chartData;
+}
+
+function LineGraph({casesType}) {
   const [data, setData] = useState({});
 
-    const buildChartData = (data, casesType = 'cases') => {
-    const chartData = [];
-    let previousPoint;
-
-      for (let date in data.cases ) {
-        if (previousPoint) {
-          const newPoint = {
-            x: date,
-            y: data[casesType][date] - previousPoint,
-          };
-          chartData.push(newPoint);
-        }
-        previousPoint = data[casesType][date]
-      }
-      return chartData;
-  }
-
   useEffect(() => {
-    const fecthData = (async () => {
+    const fecthData = async () => {
       await fetch('http://disease.sh/v3/covid-19/historical/all?lastdays=120')
-      .then((response) => response.json())
+      .then((response) => {return response.json()})
       .then((data) => {
-        const chartData = buildChartData(data, "cases");
+          console.log(data)
+
+        const chartData = buildChartData(data, casesType);
         setData(chartData)
+      }).catch(err => {
+        console.log(err)
       })
-    })
+    }
 
     fecthData()
     
   }, [casesType])
 
   return (
-    <div>
+    <GraphContainer>
       {data?.length > 0 && (
         <Line
           data={{
@@ -95,7 +104,7 @@ function LineGraph(casesType) {
           />
       )}
       
-    </div>
+    </GraphContainer>
   )
 }
 
