@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { MenuItem, FormControl, Select, CardContent, TextField  } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { MenuItem, FormControl, Select, CardContent  } from '@material-ui/core';
+// import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import InfoBox from './components/Header.InfoBox/InfoBox.components';
 import Map from './components/Map/Map';

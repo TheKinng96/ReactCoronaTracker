@@ -16,17 +16,22 @@ const TableContainer = styled.div`
 
 `
 
-const TR = styled.tr`
+const TR = styled.div`
   display: flex;
   justify-content: space-between;
   cursor: pointer;
 
   &:nth-of-type(odd) {
-    background-color: #f3f2f8
+    background-color: #f3f2f8;
   }
 
-  & > td {
+  & > span {
     padding: 0.5rem;
+  }
+
+  &:hover {
+    background-color: royalblue;
+    color: white
   }
 `
 
@@ -36,12 +41,12 @@ function Table({countries}) {
       <tbody>
       {countries.map(({country, cases}) => (
         <TR key={country}>
-          <td>{country}</td>
-          <td>
+          <span>{country}</span>
+          <span>
             <strong>
               {numeral(cases).format("0,0")}
             </strong>
-          </td>
+          </span>
         </TR>
       ))}
       </tbody>
