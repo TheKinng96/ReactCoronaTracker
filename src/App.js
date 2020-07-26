@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MenuItem, FormControl, Select, CardContent  } from '@material-ui/core';
-// import Autocomplete from '@material-ui/lab/Autocomplete';
+import { MenuItem, FormControl, Select, CardContent,TextField } from '@material-ui/core';
 
 import InfoBox from './components/Header.InfoBox/InfoBox.components';
 import Map from './components/Map/Map';
@@ -15,10 +14,6 @@ import 'leaflet/dist/leaflet.css'
 const baseURL = 'https://disease.sh/v3/covid-19/all';
 const countryURL = 'https://disease.sh/v3/covid-19/countries/';
 
-//diamond princess
-//ms zaandam
-
-
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState('worldwide');
@@ -28,6 +23,7 @@ function App() {
   const [mapZoom, setMapZoom] = useState(3);
   const [mapCountries, setMapCountries] = useState([]);
   const [casesType, setCasesType] = useState("cases");
+  const [value, setValue] = useState('')
 
   useEffect(() => {
     fetch(baseURL)
@@ -52,7 +48,7 @@ function App() {
               return filteredData.push(country)
             }
           })
-          console.log(filteredData)
+          // console.log(filteredData)
 
           const countries = filteredData.map(country => ({
             name: country.country,
@@ -70,8 +66,9 @@ function App() {
   }, [])
   
   const onCountryChange = async (event) => {
+    event.preventDefault();
+    
     const selectedCountry = event.target.value;
-
     setCountry(selectedCountry)
 
     const url = selectedCountry === 'worldwide' ? baseURL : countryURL + selectedCountry;
@@ -90,28 +87,29 @@ function App() {
     })
   }
 
+  const handleChange = event => {
+    setValue(event.target.value)
+  }
+
+  const handleSubmit = event => {
+    
+    setValue('')
+    event.preventDefault();
+  }
+
   return (
     <AppContainer id="App">
       <div className="left">
         <HeaderCard>
           <HeaderCardContent>
             <h1>Corona Tracker V2</h1>
-             {/* <Autocomplete
-              id="country-select-demo"
-              style={{ width: 300 }}
-              options={countries}
-              autoHighlight
-              value={country}
-              getOptionLabel={(option) => option.name}
-              onChange={(event, value) => onCountryChange}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label={country}
-                  variant="outlined"
-                />
-              )}
-            /> */}
+            <form onSubmit={handleSubmit}>
+              <TextField
+                id="standard-basic"
+                label={country}
+                onChange={handleChange}
+              />
+            </form>
             <FormControl className="country-list">
               <Select
                 variant="outlined"

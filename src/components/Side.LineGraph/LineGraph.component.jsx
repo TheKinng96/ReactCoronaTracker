@@ -5,6 +5,7 @@ import styled from 'styled-components';
 
 const GraphContainer = styled.div`
   flex-grow: 1;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 `
 
 const options = {
@@ -76,7 +77,7 @@ function LineGraph({casesType}) {
       await fetch('http://disease.sh/v3/covid-19/historical/all?lastdays=120')
       .then((response) => {return response.json()})
       .then((data) => {
-          console.log(data)
+          // console.log(data)
 
         const chartData = buildChartData(data, casesType);
         setData(chartData)

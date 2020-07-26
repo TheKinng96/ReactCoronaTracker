@@ -9,6 +9,7 @@ const TableContainer = styled.div`
   overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 
   &::-webkit-scrollbar {
     display: none;
@@ -38,7 +39,6 @@ const TR = styled.div`
 function Table({countries}) {
   return (
     <TableContainer>
-      <tbody>
       {countries.map(({country, cases}) => (
         <TR key={country}>
           <span>{country}</span>
@@ -49,7 +49,6 @@ function Table({countries}) {
           </span>
         </TR>
       ))}
-      </tbody>
     </TableContainer>
   )
 }
